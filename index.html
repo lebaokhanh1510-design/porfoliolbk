@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lê Bảo Khánh - Digital Portfolio</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --bg-color: #0a0a0f;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3 { font-weight: 700; }
+        a { text-decoration: none; color: var(--text-main); transition: var(--transition); }
+
+        /* --- NAVIGATION --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo { font-family: 'Fira Code', monospace; font-size: 1.5rem; color: var(--accent-primary); }
+        .nav-links { list-style: none; display: flex; gap: 2rem; }
+        .nav-links a:hover { color: var(--accent-secondary); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero h2 { font-size: 2rem; color: var(--text-muted); margin-bottom: 1.5rem; font-family: 'Fira Code', monospace; }
+        .hero p { max-width: 600px; font-size: 1.1rem; margin-bottom: 2rem; }
+
+        .btn {
+            display: inline-block; padding: 0.8rem 2rem;
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            color: white; border-radius: 4px; border: none; cursor: pointer; transition: var(--transition);
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3); }
+
+        /* --- SECTIONS --- */
+        section { padding: 100px 5%; max-width: 1200px; margin: 0 auto; }
+        .section-title { font-size: 2.5rem; margin-bottom: 3rem; display: flex; align-items: center; }
+        .section-title::after { content: ""; height: 1px; width: 300px; background: rgba(255,255,255,0.1); margin-left: 20px; }
+
+        /* --- ABOUT (Có cập nhật Ảnh chân dung) --- */
+        .about-content { display: grid; grid-template-columns: 3fr 2fr; gap: 4rem; align-items: center; }
+        .about-text p { margin-bottom: 1.5rem; color: var(--text-muted); text-align: justify; line-height: 1.8; }
+        .about-image { display: flex; justify-content: center; }
+        .about-image img { 
+            width: 100%; 
+            max-width: 320px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            border: 2px solid rgba(255,255,255,0.1); 
+            transition: var(--transition); 
+            object-fit: cover; 
+        }
+        .about-image img:hover { 
+            transform: translateY(-5px) scale(1.02); 
+            border-color: var(--accent-primary); 
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.2); 
+        }
+
+        /* --- SKILLS --- */
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .skill-card { background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); transition: var(--transition); }
+        .skill-card:hover { transform: translateY(-5px); border-color: var(--accent-primary); }
+        .skill-card h3 { margin-bottom: 1rem; color: var(--accent-primary); }
+        .skill-card ul { list-style-position: inside; color: var(--text-muted); }
+
+        /* --- ACCORDION --- */
+        .portfolio-step h3 { font-size: 1.5rem; color: var(--accent-secondary); margin-bottom: 0.5rem; }
+        .portfolio-desc { color: var(--text-muted); margin-bottom: 2rem; font-size: 1rem; }
+        .accordion-item { border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; }
+        
+        .accordion-header {
+            width: 100%; text-align: left; background: none; border: none; color: var(--text-main);
+            font-size: 1.1rem; font-weight: 600; padding: 1.2rem 0; cursor: pointer;
+            display: flex; align-items: center; gap: 15px; transition: var(--transition);
+        }
+        .accordion-header:hover { color: var(--accent-primary); }
+        .accordion-icon { font-size: 0.8rem; transition: transform 0.3s ease; }
+        .accordion-header.active .accordion-icon { transform: rotate(180deg); color: var(--accent-primary); }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+        .accordion-content-inner {
+            padding-bottom: 1.5rem; padding-left: 1.5rem;
+            border-left: 2px solid rgba(255,255,255,0.1); margin-left: 5px; color: var(--text-muted);
+        }
+
+        /* --- FILE ATTACHMENT UI --- */
+        .file-attachment {
+            display: flex;
+            align-items: center;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .file-attachment:hover {
+            border-color: var(--accent-primary);
+            background: rgba(59, 130, 246, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(59, 130, 246, 0.15);
+        }
+        .file-icon { font-size: 2.2rem; margin-right: 15px; }
+        .file-info { display: flex; flex-direction: column; }
+        .file-name { color: var(--text-main); font-weight: 600; font-size: 1rem; }
+        .file-meta { color: var(--accent-primary); font-size: 0.85rem; margin-top: 3px; }
+
+        /* --- MODAL (POPUP) UI --- */
+        .modal {
+            display: none; 
+            position: fixed; z-index: 2000; left: 0; top: 0;
+            width: 100%; height: 100%; overflow: hidden;
+            background-color: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+        }
+        .modal-content {
+            background-color: #0f172a; margin: 5% auto; padding: 40px;
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+            width: 85%; max-width: 900px; max-height: 85vh; overflow-y: auto;
+            position: relative; box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .close-btn {
+            position: absolute; top: 20px; right: 25px;
+            color: var(--text-muted); font-size: 30px; font-weight: bold;
+            cursor: pointer; transition: var(--transition);
+        }
+        .close-btn:hover { color: #ef4444; }
+
+        /* CSS NỘI DUNG TRONG MODAL */
+        .modal-content h4 { color: var(--accent-primary); margin-bottom: 10px; font-size: 1.5rem;}
+        .modal-content .task-block { margin-top: 1.5rem; background: rgba(10, 10, 15, 0.5); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 1.5rem; }
+        .modal-content .task-block h5 { color: #e2e8f0; font-size: 1.1rem; margin-bottom: 1rem; border-left: 3px solid var(--accent-secondary); padding-left: 10px; }
+        .modal-content .prompt-step { margin-bottom: 1.2rem; padding: 1rem; border-radius: 6px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .modal-content .prompt-text { font-family: 'Fira Code', monospace; font-size: 0.9rem; color: #60a5fa; margin: 10px 0; padding: 10px; background: rgba(0, 0, 0, 0.3); border-radius: 4px; border-left: 2px solid #3b82f6; }
+        .modal-content .result-text { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
+        .modal-content .result-text ul { list-style-type: disc; padding-left: 20px; margin-top: 5px; }
+        .modal-content .result-text li { margin-bottom: 8px; }
+        .modal-content .data-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; color: var(--text-main); }
+        .modal-content .data-table th, .modal-content .data-table td { border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px; text-align: left; vertical-align: top; }
+        .modal-content .data-table th { background-color: rgba(59, 130, 246, 0.1); color: var(--accent-primary); font-weight: 600; }
+        .modal-content .badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; background: rgba(139, 92, 246, 0.2); color: var(--accent-secondary); }
+        .modal-content .crear-framework { margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1)); border-radius: 8px; border: 1px dashed var(--accent-secondary); }
+        .modal-content .crear-framework li { margin-bottom: 8px; color: var(--text-main); }
+        .image-container { margin-top: 15px; padding: 15px; background: rgba(0, 0, 0, 0.3); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; }
+        .image-container img { max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); }
+
+        /* --- SUMMARY (Phần Lời ngỏ) --- */
+        .summary-card { background: rgba(30, 41, 59, 0.4); border-left: 4px solid var(--accent-secondary); padding: 2rem; border-radius: 0 8px 8px 0; margin-bottom: 2rem; }
+        .summary-card h4 { color: var(--accent-primary); margin-bottom: 1.5rem; font-size: 1.2rem; }
+        .summary-card p { color: var(--text-muted); margin-bottom: 1rem; text-align: justify; line-height: 1.8; }
+
+        /* --- FOOTER --- */
+        footer { text-align: center; padding: 3rem 5%; border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); margin-top: 50px; }
+
+        @media (max-width: 768px) {
+            .about-content { grid-template-columns: 1fr; }
+            .about-image { order: -1; margin-bottom: 20px; }
+        }
+
+        /* --- SỬA LỖI KHI XUẤT PDF --- */
+        @media print {
+            .hero h1 {
+                background: none !important;
+                -webkit-background-clip: border-box !important;
+                -webkit-text-fill-color: var(--accent-primary) !important;
+                color: var(--accent-primary) !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">&lt;LBK/&gt;</div>
+            <ul class="nav-links">
+                <li><a href="#about">Giới thiệu</a></li>
+                <li><a href="#skills">Kỹ năng</a></li>
+                <li><a href="#experience">Bài tập</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" id="home">
+            <h2 id="typewriter">Xin chào, tôi là</h2>
+            <h1>Lê Bảo Khánh</h1>
+            <p>Sinh viên ngành Điện tử Viễn thông với niềm đam mê khám phá điểm giao thoa giữa phần cứng, mạch điện và các hệ thống Trí tuệ Nhân tạo (AI).</p>
+            <a href="#experience" class="btn">Xem Portfolio Bài Tập</a>
+        </section>
+
+        <!-- PHẦN GIỚI THIỆU (CÓ ẢNH ĐÃ SỬA TÊN THÀNH avatar.jpg) -->
+        <section id="about">
+            <h2 class="section-title">01. Về bản thân</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Tôi hiện là sinh viên năm nhất (Khóa QH-2025-I/CQ-E-EC1) tại Trường Đại học Công nghệ, Đại học Quốc gia Hà Nội (VNU-UET).</p>
+                    <p>Với nền tảng học thuật tập trung mạnh vào các môn khối STEM, tôi đặc biệt yêu thích việc phân tích tín hiệu, thiết kế hệ thống và tìm hiểu cách AI có thể tối ưu hóa các quy trình kỹ thuật. Tôi luôn hướng tới việc kết hợp tư duy logic của toán học với khả năng giải quyết vấn đề của lập trình để tạo ra các giải pháp thực tế và ứng dụng lâu dài trong lĩnh vực Điện tử Viễn thông.</p>
+                </div>
+                <div class="about-image">
+                    <!-- Ảnh chân dung -->
+                    <img src="avatar.jpg" alt="Chân dung Lê Bảo Khánh">
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <h2 class="section-title">02. Nền tảng & Kỹ năng</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h3>Kỹ thuật Điện tử</h3>
+                    <ul>
+                        <li>Phân tích Mạch điện</li>
+                        <li>Op-Amps & BJT</li>
+                        <li>Tín hiệu và Hệ thống</li>
+                    </ul>
+                </div>
+                <div class="skill-card">
+                    <h3>Lập trình & Tính toán</h3>
+                    <ul>
+                        <li>Python (Anaconda, Jupyter)</li>
+                        <li>Giải tích & Đại số tuyến tính</li>
+                        <li>Tìm hiểu AI cơ bản</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience">
+            <h2 class="section-title">03. Báo cáo Bài tập Thành phần</h2>
+            
+            <div class="portfolio-step">
+                <h3>Hệ thống hóa và trình bày các kết quả bài tập</h3>
+                <p class="portfolio-desc">Trình bày lại kết quả của các bài tập nhỏ từ Bài 1 đến Bài 6 để làm nổi bật sản phẩm cuối cùng và quy trình thực hiện của từng kỹ năng.</p>
+
+                <div class="accordion">
+                    <!-- BÀI 1 -->
+                    <div class="accordion-item">
+                        <button class="accordion-header">
+                            <span class="accordion-icon">▼</span>
+                            Bài 1 - Bài tập 1 của mục 1.4: Thao tác cơ bản với tệp tin và thư mục
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-content-inner">
+                                <p>Trình bày cấu trúc thư mục tối ưu và quy tắc đặt tên tệp đã thiết lập, kèm ảnh chụp minh họa.</p>
+                                <!-- File đính kèm ảo -->
+                                <div class="file-attachment" onclick="openModal('modal-task1')">
+                                    <span class="file-icon">📄</span>
+                                    <div class="file-info">
+                                        <span class="file-name">Bao_Cao_Thuc_Hanh_OS_Le_Bao_Khanh.pdf</span>
+                                        <span class="file-meta">Nhấp để mở tài liệu (Bao gồm Ảnh minh chứng)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BÀI 2 -->
+                    <div class="accordion-item">
+                        <button class="accordion-header">
+                            <span class="accordion-icon">▼</span>
+                            Bài 2 - Bài tập 2 của mục 2.4: Tìm kiếm và đánh giá thông tin học thuật
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-content-inner">
+                                <p>Trình bày kết quả tìm kiếm học thuật bằng các toán tử nâng cao và bảng đánh giá nguồn tin đã thực hiện.</p>
+                                <!-- File đính kèm ảo -->
+                                <div class="file-attachment" onclick="openModal('modal-task2')">
+                                    <span class="file-icon">📝</span>
+                                    <div class="file-info">
+                                        <span class="file-name">Bao_Cao_Tim_Kiem_Thong_Tin_LeBaoKhanh.docx</span>
+                                        <span class="file-meta">Nhấp để xem Bảng đánh giá nguồn tin</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BÀI 3 -->
+                    <div class="accordion-item">
+                        <button class="accordion-header">
+                            <span class="accordion-icon">▼</span>
+                            Bài 3 - Bài tập 2 của mục 3.4: Viết Prompt hiệu quả cho các tác vụ học tập
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-content-inner">
+                                <p>Trình bày sự so sánh giữa Prompt ban đầu và Prompt cải tiến cùng kết quả đầu ra từ AI.</p>
+                                <!-- File đính kèm ảo -->
+                                <div class="file-attachment" onclick="openModal('modal-task3')">
+                                    <span class="file-icon">📄</span>
+                                    <div class="file-info">
+                                        <span class="file-name">Bao_Cao_Prompt_Engineering_Le_Bao_Khanh.pdf</span>
+                                        <span class="file-meta">Nhấp để xem Báo cáo & Phân tích Prompt</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- BÀI 4 -->
+                    <div class="accordion-item">
+                        <button class="accordion-header">
+                            <span class="accordion-icon">▼</span>
+                            Bài 4 - Bài tập 3 của mục 4.4: Sử dụng công cụ hợp tác trực tuyến cho dự án nhóm
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-content-inner">
+                                <p>Trình bày minh chứng về việc sử dụng công cụ quản lý dự án nhóm và cách thức phối hợp trực tuyến.</p>
+                                <!-- File đính kèm ảo -->
+                                <div class="file-attachment" onclick="openModal('modal-task4')">
+                                    <span class="file-icon">📄</span>
+                                    <div class="file-info">
+                                        <span class="file-name">Bao_Cao_Cong_Cu_Cong_Tac_Le_Bao_Khanh.pdf</span>
+                                        <span class="file-meta">Nhấp để xem Phân tích Hệ sinh thái nhóm</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BÀI 5 -->
+                    <div class="accordion-item">
+                        <button class="accordion-header">
+                            <span class="accordion-icon">▼</span>
+                            Bài 5 - Bài tập 2 của mục 5.4: Sử dụng AI tạo sinh để hỗ trợ sáng tạo nội dung
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-content-inner">
+                                <p>Trưng bày sản phẩm nội dung số hoàn thiện (hình ảnh, video hoặc bài viết) được hỗ trợ bởi AI.</p>
+                                <!-- File đính kèm ảo -->
+                                <div class="file-attachment" onclick="openModal('modal-task5')">
+                                    <span class="file-icon">📊</span>
+                                    <div class="file-info">
+                                        <span class="file-name">Bao_Cao_GenAI_Sang_Tao_Noi_Dung.pdf</span>
+                                        <span class="file-meta">Nhấp để xem Báo cáo Infographic (Có minh chứng)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BÀI 6 -->
+                    <div class="accordion-item">
+                        <button class="accordion-header">
+                            <span class="accordion-icon">▼</span>
+                            Bài 6 - Bài tập 4 của mục 6.4: Sử dụng AI có trách nhiệm trong học tập và nghiên cứu
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-content-inner">
+                                <p>Trình bày bộ nguyên tắc cá nhân về sử dụng AI có trách nhiệm dựa trên các nghiên cứu đã thực hiện.</p>
+                                <!-- File đính kèm ảo -->
+                                <div class="file-attachment" onclick="openModal('modal-task6')">
+                                    <span class="file-icon">📄</span>
+                                    <div class="file-info">
+                                        <span class="file-name">Bao_Cao_Dao_Duc_AI_Le_Bao_Khanh.pdf</span>
+                                        <span class="file-meta">Nhấp để xem Bộ nguyên tắc và 6 Kim chỉ nam</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Tổng kết & Cảm nhận -->
+            <div class="portfolio-step" style="margin-top: 4rem;">
+                <h3>Tổng kết & Cảm nhận</h3>
+                
+                <div class="summary-card">
+                    <h4>📝 Lời ngỏ</h4>
+                    <p>Kính gửi các Thầy/Cô,</p>
+                    <p>Quá trình xây dựng Digital Portfolio này là một trải nghiệm thực tế vô cùng quý giá đối với em. Thông qua việc hệ thống hóa các bài tập thành phần, em đã học được cách ứng dụng hiệu quả AI tạo sinh vào việc tối ưu hóa quy trình học tập và nghiên cứu. Việc tái cấu trúc toàn bộ tài liệu chuyên môn và chuẩn hóa các thao tác tìm kiếm không chỉ giúp em hoàn thành tốt các yêu cầu của môn học, mà còn tạo ra một nền tảng tư duy số khoa học, phục vụ lâu dài cho định hướng chuyên ngành Điện tử Viễn thông sau này.</p>
+                    <p>Em xin chân thành cảm ơn các Thầy/Cô đã tận tình giảng dạy, hướng dẫn và mang đến những góc nhìn mới mẻ về việc sử dụng công nghệ có trách nhiệm. Sản phẩm này là minh chứng cho sự nỗ lực rèn luyện của bản thân em trong suốt quá trình học tập vừa qua.</p>
+                    <p style="margin-top: 1.5rem;">Trân trọng kính chào,</p>
+                    <p style="color: var(--accent-primary); font-weight: bold; font-size: 1.1rem; margin-top: 0.5rem;">Lê Bảo Khánh</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== KHU VỰC CHỨA CÁC MODAL (POPUP) ==================== -->
+        
+        <!-- Modal Bài 1 -->
+        <div id="modal-task1" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal('modal-task1')">&times;</span>
+                <h4>📄 Báo cáo Thực hành: Kỹ năng Quản lý Hệ điều hành</h4>
+                <p style="color: var(--text-muted); font-size: 0.95rem;"><strong>Mục tiêu:</strong> Củng cố kỹ năng làm chủ không gian lưu trữ và thao tác tệp tin trên hệ điều hành Windows.</p>
+
+                <div class="task-block">
+                    <h5>Tường thuật chi tiết các bước thực hiện</h5>
+                    
+                    <div class="prompt-step">
+                        <span class="badge" style="background: rgba(59, 130, 246, 0.2); color: #3b82f6;">Bước 1-4: Khởi tạo & Truy cập</span>
+                        <div class="result-text">
+                            <ul>
+                                <li>Nhấn tổ hợp phím <code>Windows + E</code> để mở File Explorer, chọn "This PC" và truy cập vào ổ <code>D:</code> để đảm bảo an toàn dữ liệu hệ thống.</li>
+                                <li>Tạo thư mục mới có tên <code>ThucHanh_LeBaoKhanh</code> và truy cập vào đường dẫn <code>D:\ThucHanh_LeBaoKhanh</code>.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="prompt-step">
+                        <span class="badge" style="background: rgba(139, 92, 246, 0.2); color: #8b5cf6;">Bước 5-9: Thao tác Tệp tin cơ bản</span>
+                        <div class="result-text">
+                            <ul>
+                                <li>Tạo tệp văn bản <code>GhiChu.txt</code>, sau đó dùng phím tắt <code>F2</code> đổi tên thành <code>GhiChu Quan Trong.txt</code>.</li>
+                                <li>Tạo thư mục con tên là <code>TaiLieu</code>.</li>
+                                <li>Sử dụng phím tắt sao chép (<code>Ctrl + C</code>) tệp <code>GhiChu Quan Trong.txt</code> và dán (<code>Ctrl + V</code>) vào bên trong thư mục <code>TaiLieu</code>.</li>
+                                <li>Tạo tệp <code>DiChuyen.txt</code> ở thư mục gốc, dùng lệnh cắt (<code>Ctrl + X</code>) và dán (<code>Ctrl + V</code>) vào <code>TaiLieu</code> để di chuyển tệp hoàn toàn.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="prompt-step">
+                        <span class="badge" style="background: rgba(239, 68, 68, 0.2); color: #ef4444;">Bước 10-12: Xóa & Khôi phục</span>
+                        <div class="result-text">
+                            <ul>
+                                <li>Xóa tạm thời: Chọn bản sao <code>GhiChuQuanTrong.txt</code> và nhấn <code>Delete</code> để chuyển tệp vào Thùng rác (Recycle Bin).</li>
+                                <li>Xóa vĩnh viễn (Hard Delete): Chọn tệp <code>DiChuyen.txt</code> và nhấn <code>Shift + Delete</code>, sau đó xác nhận "Yes" để xóa hoàn toàn khỏi hệ thống.</li>
+                                <li>Thu nhỏ cửa sổ (<code>Win + D</code>), mở Recycle Bin và nhấp chuột phải chọn lệnh <code>Restore</code> để khôi phục tệp <code>GhiChu Quan Trong.txt</code> về vị trí ban đầu.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-block">
+                    <h5>Ảnh Minh chứng Thực hành</h5>
+                    <div class="image-container">
+                        <!-- Ảnh chứng minh Bài 1 đã sửa tên thành bai1.png -->
+                        <img src="bai1.png" alt="Minh chứng cấu trúc thư mục và quy tắc đặt tên tệp">
+                    </div>
+                </div>
+
+                <div class="crear-framework" style="margin-top: 15px; padding: 1rem;">
+                    <h5 style="color: var(--accent-secondary); margin-bottom: 5px;">💡 Nhận xét</h5>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0;">Việc phân biệt rõ ranh giới giữa lệnh Copy (nhân bản) và Cut (di dời), cũng như Xóa tạm thời và Xóa vĩnh viễn kết hợp với bộ phím tắt thao tác nhanh giúp giảm rủi ro mất mát dữ liệu và tối ưu hóa tốc độ làm việc.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Bài 2 -->
+        <div id="modal-task2" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal('modal-task2')">&times;</span>
+                <h4>📄 Báo cáo: Tìm kiếm và đánh giá thông tin</h4>
+                <p style="color: var(--text-muted); font-size: 0.95rem;"><strong>Chủ đề:</strong> Ứng dụng của công nghệ vi mạch bán dẫn trong các thiết bị viễn thông hiện đại.</p>
+                
+                <div style="overflow-x: auto; margin-top: 20px;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên tài liệu / Chủ đề chính</th>
+                                <th>Phân loại</th>
+                                <th>Tác giả / Nguồn</th>
+                                <th>Đánh giá độ tin cậy</th>
+                                <th style="text-align: center;">Hạng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>"The Future of Semiconductor in 5G Networks"</td>
+                                <td><span class="badge">Bài báo khoa học</span></td>
+                                <td>Chen, L. et al. / IEEE</td>
+                                <td>Rất cao. Chuyên gia IEEE. Cập nhật mới, qua bình duyệt khắt khe.</td>
+                                <td style="text-align: center; font-weight: bold; color: var(--accent-primary);">1</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>"Vật liệu bán dẫn thế hệ mới cho thiết bị viễn thông"</td>
+                                <td><span class="badge">Bài báo khoa học</span></td>
+                                <td>Nguyễn Văn A / Tạp chí Khoa học CN VN</td>
+                                <td>Cao. Nguồn tạp chí uy tín trong nước, trích dẫn rõ ràng.</td>
+                                <td style="text-align: center; font-weight: bold; color: var(--accent-primary);">2</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>"Advanced Semiconductor Fundamentals"</td>
+                                <td><span class="badge" style="background: rgba(59, 130, 246, 0.2); color: var(--accent-primary);">Sách chuyên khảo</span></td>
+                                <td>Pierret, R.F. / Pearson</td>
+                                <td>Rất cao. Sách giáo khoa kinh điển, NXB uy tín.</td>
+                                <td style="text-align: center; font-weight: bold; color: var(--accent-primary);">3</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>"Energy Efficiency in Telecom IC Design"</td>
+                                <td><span class="badge">Bài báo khoa học</span></td>
+                                <td>Smith, J. / Hội nghị IEEE</td>
+                                <td>Cao. Đã qua phản biện tại hội nghị quốc tế uy tín.</td>
+                                <td style="text-align: center; font-weight: bold; color: var(--accent-primary);">2</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>"Thiết kế mạch tích hợp: Từ lý thuyết đến thực hành"</td>
+                                <td><span class="badge" style="background: rgba(59, 130, 246, 0.2); color: var(--accent-primary);">Sách chuyên khảo</span></td>
+                                <td>Trần Văn B / NXB Giáo dục</td>
+                                <td>Cao. Sách phục vụ đào tạo, NXB uy tín, nội dung đã thẩm định.</td>
+                                <td style="text-align: center; font-weight: bold; color: var(--accent-primary);">3</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>"Impact of Silicon Photonics on Telecom"</td>
+                                <td><span class="badge">Bài báo khoa học</span></td>
+                                <td>Kumar, V. / Journal of Lightwave Tech</td>
+                                <td>Rất cao. Tạp chí chuyên ngành top đầu.</td>
+                                <td style="text-align: center; font-weight: bold; color: var(--accent-primary);">1</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>"Evolution of RF Transceivers in Wireless Comm"</td>
+                                <td><span class="badge">Bài báo khoa học</span></td>
+                                <td>Lee, M. / IEEE Comm Mag</td>
+                                <td>Rất cao. Chỉ số ảnh hưởng (Impact Factor) lớn.</td>
+                                <td style="text-align: center; font-weight: bold; color: var(--accent-primary);">1</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>"Qualcomm 5G Semiconductor Whitepaper"</td>
+                                <td><span class="badge" style="background: rgba(156, 163, 175, 0.2); color: #e2e8f0;">Nguồn mở</span></td>
+                                <td>Qualcomm Technologies</td>
+                                <td>Trung bình - Khá. Tính thương mại/quảng bá doanh nghiệp cao.</td>
+                                <td style="text-align: center; font-weight: bold; color: var(--accent-primary);">4</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>"Xu hướng thiếu hụt chip toàn cầu năm nay"</td>
+                                <td><span class="badge" style="background: rgba(156, 163, 175, 0.2); color: #e2e8f0;">Nguồn mở</span></td>
+                                <td>VnExpress Số hóa</td>
+                                <td>Trung bình. Chỉ mang tính chất tin tức thời sự.</td>
+                                <td style="text-align: center; font-weight: bold; color: var(--accent-primary);">5</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>"How Semiconductors work in Routers"</td>
+                                <td><span class="badge" style="background: rgba(156, 163, 175, 0.2); color: #e2e8f0;">Nguồn mở</span></td>
+                                <td>TechTarget</td>
+                                <td>Trung bình. Nội dung ở mức cơ bản, nhà báo viết.</td>
+                                <td style="text-align: center; font-weight: bold; color: var(--accent-primary);">5</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Bài 3 -->
+        <div id="modal-task3" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal('modal-task3')">&times;</span>
+                <h4>📄 Báo cáo Thực hành: Kỹ năng Viết Câu lệnh (Prompt Engineering)</h4>
+                <p style="color: var(--text-muted); font-size: 0.95rem;"><strong>Lĩnh vực ứng dụng:</strong> Kỹ thuật Điện tử & Xử lý Tín hiệu.</p>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 15px;"><strong>Mục tiêu:</strong> Tối ưu hóa LLMs áp dụng vào 3 tác vụ chuyên ngành để khai thác tối đa sức mạnh của AI.</p>
+
+                <!-- Tác vụ 1 -->
+                <div class="task-block">
+                    <h5>Tác vụ 1: Tóm tắt tài liệu học thuật (Op-Amp)</h5>
+                    <div class="prompt-step">
+                        <span class="badge" style="background: #475569;">Cơ bản</span>
+                        <div class="prompt-text">Tóm tắt bài viết này về Op-Amp. [Dán văn bản]</div>
+                        <div class="result-text"><strong>Kết quả:</strong> Trả về đoạn văn dài dòng, ngôn ngữ chung chung, thiếu sót các thuật ngữ chuyên ngành quan trọng như CMRR hay Input Bias Current.</div>
+                    </div>
+                    <div class="prompt-step">
+                        <span class="badge" style="background: #3b82f6;">Cải tiến</span>
+                        <div class="prompt-text">Tóm tắt bài báo về ứng dụng Op-Amp trong y sinh. Hãy nêu ra 3 đặc điểm quan trọng nhất của Op-Amp đo lường được đề cập trong bài. [Dán văn bản]</div>
+                        <div class="result-text"><strong>Kết quả:</strong> Tốt hơn, chia thành 3 điểm chính có đề cập độ nhiễu thấp và CMRR. Tuy nhiên, định dạng vẫn còn khá lộn xộn.</div>
+                    </div>
+                    <div class="prompt-step">
+                        <span class="badge" style="background: #8b5cf6;">Nâng cao (Role Prompting & Format)</span>
+                        <div class="prompt-text">Đóng vai một kỹ sư điện tử. Hãy tóm tắt bài báo học thuật sau để trình bày cho sinh viên năm nhất. Yêu cầu đầu ra: 1. Một câu tóm tắt cốt lõi (TL;DR). 2. Một bảng gồm 3 cột: [Thông số Op-Amp], [Giá trị tối ưu], [Ý nghĩa thực tiễn].</div>
+                        <div class="result-text"><strong>Kết quả:</strong> Xuất sắc. AI tự động trích xuất các thông số (CMRR > 100dB, Điện áp bù nhỏ) vào bảng so sánh rất dễ tra cứu.</div>
+                    </div>
+                </div>
+
+                <!-- Tác vụ 2 -->
+                <div class="task-block">
+                    <h5>Tác vụ 2: Giải thích khái niệm phức tạp (Phân cực BJT)</h5>
+                    <div class="prompt-step">
+                        <span class="badge" style="background: #475569;">Cơ bản</span>
+                        <div class="prompt-text">Phân cực BJT là gì?</div>
+                        <div class="result-text"><strong>Kết quả:</strong> Trả về định nghĩa dùng quá nhiều công thức lý thuyết khô khan mà không giải thích bản chất vật lý.</div>
+                    </div>
+                    <div class="prompt-step">
+                        <span class="badge" style="background: #3b82f6;">Cải tiến</span>
+                        <div class="prompt-text">Giải thích kỹ thuật phân cực cho transistor BJT để làm mạch khuếch đại. Ưu điểm của phương pháp phân cực bằng cầu phân áp so với phân cực dòng cực gốc là gì?</div>
+                        <div class="result-text"><strong>Kết quả:</strong> Trọng tâm hơn (chỉ ra sự ổn định Q-point), nhưng văn phong vẫn khó tiếp thu đối với sinh viên mới học.</div>
+                    </div>
+                    <div class="prompt-step">
+                        <span class="badge" style="background: #8b5cf6;">Nâng cao (Chain-of-Thought & Analogy)</span>
+                        <div class="prompt-text">Đóng vai giảng viên môn Mạch Điện tử. Hãy giải thích nguyên lý phân cực BJT (cầu phân áp)... Trình bày từng bước (Step-by-step): Bước 1: Giải thích "Phân cực" nghĩa là gì (sử dụng phép ẩn dụ/analogy với việc bơm nước). Bước 2: Mục đích điểm tĩnh Q-point. Bước 3: Tại sao cầu phân áp ưu việt hơn.</div>
+                        <div class="result-text"><strong>Kết quả:</strong> Hoàn hảo. AI so sánh việc phân cực BJT như việc mở hé van nước để dòng nước tăng/giảm linh hoạt. Lập luận rất logic theo từng bước.</div>
+                    </div>
+                </div>
+
+                <!-- Tổng hợp CREAR -->
+                <div class="crear-framework">
+                    <h5 style="color: var(--accent-secondary); margin-bottom: 10px;">🌟 Tổng hợp Bộ nguyên tắc viết Prompt (CREAR Framework)</h5>
+                    <ul style="list-style-position: inside;">
+                        <li><strong>C</strong>ontext (Ngữ cảnh): Luôn cung cấp bối cảnh (Ví dụ: "Dành cho sinh viên năm nhất").</li>
+                        <li><strong>R</strong>ole (Giao vai): Xác định rõ chuyên gia mà AI cần mô phỏng.</li>
+                        <li><strong>E</strong>xplicit formatting (Định dạng): Chỉ định cấu trúc cụ thể (Bảng so sánh, gạch đầu dòng).</li>
+                        <li><strong>A</strong>nalogy (Sử dụng Ẩn dụ): Ép AI dùng các phép so sánh đời thực cho các khái niệm khó.</li>
+                        <li><strong>R</strong>efinement (Tinh chỉnh): Yêu cầu AI tinh chỉnh lại kết quả ("Giải thích lại bước 3").</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Bài 4 -->
+        <div id="modal-task4" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal('modal-task4')">&times;</span>
+                <h4>📄 Báo cáo: Trải nghiệm Ứng dụng Công cụ Cộng tác Trực tuyến</h4>
+                <p style="color: var(--text-muted); font-size: 0.95rem;"><strong>Vai trò cá nhân:</strong> Chuyên viên Quản lý Dữ liệu & Soạn thảo nội dung.</p>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 15px;"><strong>Mục tiêu cốt lõi:</strong> Tái cấu trúc, quy hoạch và hệ thống hóa toàn bộ Dữ liệu Học tập & Hoạt động của nhóm.</p>
+
+                <div class="task-block">
+                    <h5>1. Thiết lập Hệ sinh thái Công cụ Cộng tác</h5>
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Công cụ</th>
+                                    <th>Phạm vi Ứng dụng & Trách nhiệm</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="badge" style="background: rgba(0, 121, 191, 0.2); color: #38bdf8;">Trello</span></td>
+                                    <td>Trực quan hóa công việc cá nhân theo Kanban. Cụ thể hóa đầu việc thành checklist, đặt thời hạn và nhãn ưu tiên.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge" style="background: rgba(15, 157, 88, 0.2); color: #4ade80;">Google Docs</span></td>
+                                    <td>Đồng soạn thảo "Sổ tay Hướng dẫn Phân loại Dữ liệu". Áp dụng linh hoạt chế độ "Đề xuất" (Suggesting Mode) và "Bình luận".</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge" style="background: rgba(244, 180, 0, 0.2); color: #facc15;">Google Drive</span></td>
+                                    <td>Xây dựng cây thư mục phân cấp khoa học với quy ước đặt tên (Naming convention) chặt chẽ.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge" style="background: rgba(75, 83, 188, 0.2); color: #818cf8;">Microsoft Teams</span></td>
+                                    <td>Thiết lập kênh thảo luận chuyên biệt (Threads) và thực hiện báo cáo tiến độ cuối ngày (Daily Stand-up) gọn gàng.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="task-block">
+                    <h5>2. Thách thức Tương tác & Biện pháp Giải quyết</h5>
+                    
+                    <div class="prompt-step">
+                        <div class="prompt-text" style="color: #f87171; border-left-color: #ef4444;">
+                            🚨 Vấn đề 1: Xung đột khi đồng chỉnh sửa cấu trúc (Edit Conflicts)
+                        </div>
+                        <div class="result-text">
+                            <strong>Hiện trạng:</strong> Các thành viên cùng lúc đổi tên và di chuyển tệp tin dẫn đến gãy liên kết, nhân bản dữ liệu lỗi.<br>
+                            <strong>Giải pháp:</strong> Triển khai quy tắc "Khóa dữ liệu tạm thời" (Data Lock out). Người thao tác phải chuyển thẻ Trello sang trạng thái [DOING_LOCKED] và thông báo trên nhóm để người khác tạm dừng.
+                        </div>
+                    </div>
+
+                    <div class="prompt-step">
+                        <div class="prompt-text" style="color: #fbbf24; border-left-color: #f59e0b;">
+                            🚨 Vấn đề 2: Hội chứng quá tải thông báo (Notification Overload)
+                        </div>
+                        <div class="result-text">
+                            <strong>Hiện trạng:</strong> Thông báo từ 4 nền tảng diễn ra liên tục 24/7 gây áp lực tâm lý và mất tập trung nghiêm trọng.<br>
+                            <strong>Giải pháp:</strong> Cấu hình "Quiet Hours" từ 22h30 đến 07h00. Thống nhất "Khung giờ cốt lõi" (Core Hours) từ 20h00 - 21h30 để tập trung xử lý vấn đề nóng, ngoài giờ đó áp dụng cơ chế giao tiếp bất đồng bộ.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Bài 5 -->
+        <div id="modal-task5" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal('modal-task5')">&times;</span>
+                <h4>📄 Báo cáo Dự án: Ứng dụng GenAI trong Sáng tạo Nội dung</h4>
+                <p style="color: var(--text-muted); font-size: 0.95rem;"><strong>Tên dự án:</strong> Infographic: Trực quan hóa Bài toán Cơ học Vật lý bằng Python.</p>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 15px;"><strong>Mục tiêu:</strong> Trình bày sinh động cách sử dụng Python (Matplotlib, NumPy) để giải quyết và vẽ đồ thị mô phỏng các hiện tượng vật lý đại cương (như ném xiên, dao động điều hòa).</p>
+
+                <div class="task-block">
+                    <h5>1. Workflow kết hợp 3 công cụ AI</h5>
+                    
+                    <div class="prompt-step">
+                        <span class="badge" style="background: rgba(15, 157, 88, 0.2); color: #4ade80;">Google Gemini & ChatGPT (Văn bản & Code)</span>
+                        <div class="prompt-text">
+                            "Đóng vai là một giảng viên kỹ thuật, hãy viết một kịch bản ngắn... Yêu cầu: Nêu công thức vật lý, ý nghĩa dùng Python, và cung cấp đoạn code (dùng matplotlib) cực kỳ ngắn gọn để vẽ quỹ đạo."
+                        </div>
+                        <div class="result-text">
+                            <strong>Nhận xét:</strong> Cả hai đều cung cấp dàn ý tốt. Tuy nhiên, Gemini chia gạch đầu dòng (bullet points) rõ ràng và đoạn mã Python được tối ưu ngắn gọn hơn, rất phù hợp cho Infographic.<br>
+                            <span style="color: var(--accent-secondary);">👉 Human Touch:</span> Chỉnh sửa lại hằng số trong code (ví dụ đổi góc ném ban đầu thành 45 độ) và rút gọn chú thích sang tiếng Việt.
+                        </div>
+                    </div>
+
+                    <div class="prompt-step">
+                        <span class="badge" style="background: rgba(239, 68, 68, 0.2); color: #f87171;">DALL-E 3 (Hình ảnh)</span>
+                        <div class="prompt-text">
+                            "Create a flat vector illustration suitable for an infographic. The image shows a glowing trajectory of a projectile motion on a dark grid background... Modern, minimalist, neon blue and orange color palette."
+                        </div>
+                        <div class="result-text">
+                            <strong>Nhận xét:</strong> DALL-E bắt đúng tinh thần màu neon và nền lưới (grid). Tuy nhiên gặp lỗi sinh text vô nghĩa (gibberish text) trong ảnh.<br>
+                            <span style="color: var(--accent-secondary);">👉 Human Touch:</span> Tải ảnh về và dùng Magic Eraser xóa đi phần text bị lỗi do AI sinh ra để đảm bảo độ chính xác cho tài liệu kỹ thuật.
+                        </div>
+                    </div>
+                    
+                    <div class="prompt-step">
+                        <span class="badge" style="background: rgba(0, 196, 204, 0.2); color: #22d3ee;">Canva Magic Design (Thiết kế bố cục)</span>
+                        <div class="prompt-text">
+                            "Tạo một infographic giáo dục với tỷ lệ 9:16, màu sắc chủ đạo xanh navy và cam, sử dụng hình ảnh này làm trung tâm."
+                        </div>
+                        <div class="result-text">
+                            <strong>Nhận xét:</strong> AI gợi ý mẫu phối màu đồng bộ nhưng phân bổ tỷ lệ text và ảnh chưa hợp lý cho nội dung chứa code.<br>
+                            <span style="color: var(--accent-secondary);">👉 Human Touch:</span> Dùng mẫu AI làm nền tảng, tự tay căn chỉnh hộp văn bản và áp dụng font monospace cho code. AI gợi ý thẩm mỹ, người dùng quyết định luồng đọc (visual hierarchy).
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-block">
+                    <h5>2. Phân tích Vai trò & Vấn đề Đạo đức</h5>
+                    <div class="result-text">
+                        <ul>
+                            <li><strong>Sự thay đổi trong quy trình sáng tạo:</strong> Chuyển từ mô hình "tuyến tính" (tự làm từ A-Z) sang mô hình "giám tuyển" (curation & editing). Thay vì là người thợ, tôi đóng vai trò Art Director: Đưa chỉ thị (prompt), để AI làm việc thô, và mình gọt giũa, thẩm định tính chính xác.</li>
+                            <li><strong>Tính Toàn vẹn Học thuật:</strong> Không nhận vơ code 100% do mình viết. Đã bổ sung chú thích rõ ràng trên Infographic: "Nội dung và hình ảnh có sự hỗ trợ từ công cụ GenAI (Gemini, DALL-E 3)".</li>
+                            <li><strong>Bản quyền:</strong> Hình ảnh từ DALL-E 3 chỉ nên giới hạn ở mức độ dự án bài tập hoặc phi thương mại để tránh tranh chấp bản quyền.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Bài 6 -->
+        <div id="modal-task6" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal('modal-task6')">&times;</span>
+                <h4>📄 Báo cáo: Sử dụng Trí tuệ Nhân tạo Có Trách nhiệm</h4>
+                <p style="color: var(--text-muted); font-size: 0.95rem;"><strong>Đề tài:</strong> Đạo đức AI & Tổng hợp tài liệu Tín hiệu và Hệ thống.</p>
+                
+                <div class="task-block">
+                    <h5>1. Vấn đề Đạo đức & Chính sách Liêm chính</h5>
+                    <div class="result-text">
+                        <ul>
+                            <li><strong>Liêm chính học thuật:</strong> Khuyến khích dùng AI hỗ trợ tư duy, tìm kiếm tài liệu. Nghiêm cấm "viết hộ" 100% bài luận, code mà không ghi nguồn (được xem là đạo văn).</li>
+                            <li><strong>Ranh giới Gian lận:</strong> Việc dùng AI để dịch, tóm tắt, kiểm tra lỗi cú pháp là hợp lý. Giao toàn quyền tạo sản phẩm cốt lõi là gian lận.</li>
+                            <li><strong>Tác động Tư duy:</strong> Việc phụ thuộc quá mức (Automation Bias) làm thui chột tư duy phản biện và khả năng giải quyết vấn đề (VD: copy code mà không hiểu luồng dữ liệu).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="task-block">
+                    <h5>2. Thực hành Tích hợp AI có Trách nhiệm (Định lý Nyquist-Shannon)</h5>
+                    <div class="prompt-step">
+                        <span class="badge" style="background: rgba(139, 92, 246, 0.2); color: #8b5cf6;">Prompt & Gemini Output</span>
+                        <div class="prompt-text">
+                            "Đóng vai là giáo sư Kỹ thuật Điện tử. Giải thích ngắn gọn Định lý Lấy mẫu Nyquist-Shannon (f_s >= 2f_max) và hiện tượng Aliasing..."
+                        </div>
+                        <div class="result-text">
+                            <strong>Tích hợp & Trích dẫn:</strong> Kết quả AI chính xác lý thuyết nhưng thiếu tính thực tiễn. Sinh viên đã dùng văn bản AI làm "Mở đầu lý thuyết", sau đó <span style="color: var(--accent-secondary);">tự tay vẽ biểu đồ phổ tín hiệu</span> và bổ sung ví dụ thực tế (Audio CD 44.1 kHz). Phần trích dẫn APA được ghi chú rõ ràng về việc tinh chỉnh từ Google Gemini.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="crear-framework" style="margin-top: 1.5rem;">
+                    <h5 style="color: var(--accent-secondary); margin-bottom: 10px;">🌟 6 Kim Chỉ Nam: Sử dụng AI trong Học thuật</h5>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                        <div style="background: rgba(15, 157, 88, 0.1); padding: 15px; border-radius: 8px; border: 1px solid rgba(15, 157, 88, 0.3);">
+                            <h6 style="color: #4ade80; font-size: 1rem; margin-bottom: 10px;">🟢 KHUYẾN KHÍCH</h6>
+                            <ul style="list-style-type: none; padding: 0; font-size: 0.9rem;">
+                                <li style="margin-bottom: 5px;">☑ Brainstorming (Lên ý tưởng)</li>
+                                <li style="margin-bottom: 5px;">☑ Giải thích khái niệm kỹ thuật phức tạp</li>
+                                <li>☑ Rà soát lỗi chính tả / Debug mã code</li>
+                            </ul>
+                        </div>
+                        <div style="background: rgba(239, 68, 68, 0.1); padding: 15px; border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.3);">
+                            <h6 style="color: #f87171; font-size: 1rem; margin-bottom: 10px;">🔴 NGHIÊM CẤM</h6>
+                            <ul style="list-style-type: none; padding: 0; font-size: 0.9rem;">
+                                <li style="margin-bottom: 5px;">☒ Chấp nhận dữ liệu mà không Fact-check</li>
+                                <li style="margin-bottom: 5px;">☒ Copy & Paste 100% làm bài tập lớn</li>
+                                <li>☒ Đưa dữ liệu nhạy cảm/bảo mật lên AI</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p style="text-align: center; font-style: italic; margin-top: 15px; color: var(--text-muted); font-size: 0.9rem;">
+                        "AI là Công cụ - Bản sắc và Tư duy là của Bạn. Hãy Minh bạch!"
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- KỊCH BẢN XỬ LÝ JS CHO MODAL VÀ HIỆU ỨNG -->
+    <script>
+        // Hiệu ứng gõ chữ phần Hero
+        const text = "Xin chào, tôi là";
+        const typingElement = document.getElementById('typewriter');
+        typingElement.innerHTML = '';
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                typingElement.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+        window.onload = typeWriter;
+
+        // Xử lý Accordion (Thu gọn/Mở rộng bài tập)
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const content = this.nextElementSibling;
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        });
+
+        // Xử lý việc MỞ Modal (Cửa sổ bật lên chứa File)
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Ngăn cuộn trang web khi popup đang mở
+        }
+
+        // Xử lý việc ĐÓNG Modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto'; // Cho phép cuộn trang lại
+        }
+
+        // Đóng modal khi bấm ra ngoài khung nội dung
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
+</body>
+</html>
